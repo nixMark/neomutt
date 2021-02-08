@@ -1031,7 +1031,7 @@ static enum CommandResult add_pattern(struct Colors *c, struct ColorLineList *to
   }
 
   /* force re-caching of index colors */
-  const struct Mailbox *m = ctx_mailbox(Context);
+  const struct Mailbox *m = ctx_mailbox(Contex2);
   if (is_index && m)
   {
     for (int i = 0; i < m->msg_count; i++)

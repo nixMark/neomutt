@@ -188,7 +188,7 @@ static struct MuttThread *top_of_thread(struct Email *e)
  */
 bool mutt_limit_current_thread(struct Email *e)
 {
-  struct Mailbox *m = ctx_mailbox(Context);
+  struct Mailbox *m = ctx_mailbox(Contex2);
   if (!e || !m)
     return false;
 
@@ -197,8 +197,8 @@ bool mutt_limit_current_thread(struct Email *e)
     return false;
 
   m->vcount = 0;
-  Context->vsize = 0;
-  Context->collapsed = false;
+  Contex2->vsize = 0;
+  Contex2->collapsed = false;
 
   for (int i = 0; i < m->msg_count; i++)
   {
@@ -219,7 +219,7 @@ bool mutt_limit_current_thread(struct Email *e)
       e->visible = true;
       m->v2r[m->vcount] = i;
       m->vcount++;
-      Context->vsize += (body->length + body->offset - body->hdr_offset);
+      Contex2->vsize += (body->length + body->offset - body->hdr_offset);
     }
   }
   return true;
@@ -337,7 +337,7 @@ bail:
  */
 int mutt_pattern_func(int op, char *prompt)
 {
-  struct Mailbox *m = ctx_mailbox(Context);
+  struct Mailbox *m = ctx_mailbox(Contex2);
   if (!m)
     return -1;
 
@@ -346,7 +346,7 @@ int mutt_pattern_func(int op, char *prompt)
   struct Progress progress;
   struct Buffer *buf = mutt_buffer_pool_get();
 
-  mutt_buffer_strcpy(buf, NONULL(Context->pattern));
+  mutt_buffer_strcpy(buf, NONULL(Contex2->pattern));
   if (prompt || (op != MUTT_LIMIT))
   {
     if ((mutt_buffer_get_field(prompt, buf, MUTT_PATTERN | MUTT_CLEAR) != 0) ||
@@ -387,8 +387,8 @@ int mutt_pattern_func(int op, char *prompt)
   if (op == MUTT_LIMIT)
   {
     m->vcount = 0;
-    Context->vsize = 0;
-    Context->collapsed = false;
+    Contex2->vsize = 0;
+    Contex2->collapsed = false;
     int padding = mx_msg_padding_size(m);
 
     for (int i = 0; i < m->msg_count; i++)
@@ -411,7 +411,7 @@ int mutt_pattern_func(int op, char *prompt)
         m->v2r[m->vcount] = i;
         m->vcount++;
         struct Body *b = e->body;
-        Context->vsize += b->length + b->offset - b->hdr_offset + padding;
+        Contex2->vsize += b->length + b->offset - b->hdr_offset + padding;
       }
     }
   }
@@ -447,8 +447,8 @@ int mutt_pattern_func(int op, char *prompt)
   if (op == MUTT_LIMIT)
   {
     /* drop previous limit pattern */
-    FREE(&Context->pattern);
-    mutt_pattern_free(&Context->limit_pattern);
+    FREE(&Contex2->pattern);
+    mutt_pattern_free(&Contex2->limit_pattern);
 
     if (m->msg_count && !m->vcount)
       mutt_error(_("No messages matched criteria"));
@@ -456,9 +456,9 @@ int mutt_pattern_func(int op, char *prompt)
     /* record new limit pattern, unless match all */
     if (!match_all)
     {
-      Context->pattern = simple;
+      Contex2->pattern = simple;
       simple = NULL; /* don't clobber it */
-      Context->limit_pattern = mutt_pattern_comp(buf->data, MUTT_PC_FULL_MSG, &err);
+      Contex2->limit_pattern = mutt_pattern_comp(buf->data, MUTT_PC_FULL_MSG, &err);
     }
   }
 

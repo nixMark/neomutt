@@ -159,8 +159,8 @@ static void process_protected_headers(struct Email *e)
   if (C_CryptProtectedHeadersRead && prot_headers && prot_headers->subject &&
       !mutt_str_equal(e->env->subject, prot_headers->subject))
   {
-    if (Context->mailbox->subj_hash && e->env->real_subj)
-      mutt_hash_delete(Context->mailbox->subj_hash, e->env->real_subj, e);
+    if (Contex2->mailbox->subj_hash && e->env->real_subj)
+      mutt_hash_delete(Contex2->mailbox->subj_hash, e->env->real_subj, e);
 
     mutt_str_replace(&e->env->subject, prot_headers->subject);
     FREE(&e->env->disp_subj);
@@ -169,17 +169,17 @@ static void process_protected_headers(struct Email *e)
     else
       e->env->real_subj = e->env->subject;
 
-    if (Context->mailbox->subj_hash)
-      mutt_hash_insert(Context->mailbox->subj_hash, e->env->real_subj, e);
+    if (Contex2->mailbox->subj_hash)
+      mutt_hash_insert(Contex2->mailbox->subj_hash, e->env->real_subj, e);
 
-    mx_save_hcache(Context->mailbox, e);
+    mx_save_hcache(Contex2->mailbox, e);
 
     /* Also persist back to the message headers if this is set */
     if (C_CryptProtectedHeadersSave)
     {
       e->env->changed |= MUTT_ENV_CHANGED_SUBJECT;
       e->changed = true;
-      Context->mailbox->changed = true;
+      Contex2->mailbox->changed = true;
     }
   }
 
@@ -292,7 +292,7 @@ int mutt_display_message(struct MuttWindow *win_index, struct MuttWindow *win_ib
     struct HdrFormatInfo hfi;
 
     hfi.mailbox = m;
-    hfi.msg_in_pager = Context ? Context->msg_in_pager : -1;
+    hfi.msg_in_pager = Contex2 ? Contex2->msg_in_pager : -1;
     hfi.pager_progress = ExtPagerProgress;
     hfi.email = e;
     mutt_make_string_info(buf, sizeof(buf), win_index->state.cols,
@@ -369,7 +369,7 @@ int mutt_display_message(struct MuttWindow *win_index, struct MuttWindow *win_ib
     struct Pager info = { 0 };
     /* Invoke the builtin pager */
     info.email = e;
-    info.ctx = Context;
+    info.ctx = Contex2;
     info.win_ibar = win_ibar;
     info.win_index = win_index;
     info.win_pbar = win_pbar;
@@ -1006,18 +1006,18 @@ int mutt_save_message_ctx(struct Email *e, enum MessageSaveOpt save_opt,
   set_copy_flags(e, transform_opt, &cmflags, &chflags);
 
   if (transform_opt != TRANSFORM_NONE)
-    mutt_parse_mime_message(Context->mailbox, e);
+    mutt_parse_mime_message(Contex2->mailbox, e);
 
-  rc = mutt_append_message(m, Context->mailbox, e, cmflags, chflags);
+  rc = mutt_append_message(m, Contex2->mailbox, e, cmflags, chflags);
   if (rc != 0)
     return rc;
 
   if (save_opt == SAVE_MOVE)
   {
-    mutt_set_flag(Context->mailbox, e, MUTT_DELETE, true);
-    mutt_set_flag(Context->mailbox, e, MUTT_PURGE, true);
+    mutt_set_flag(Contex2->mailbox, e, MUTT_DELETE, true);
+    mutt_set_flag(Contex2->mailbox, e, MUTT_PURGE, true);
     if (C_DeleteUntag)
-      mutt_set_flag(Context->mailbox, e, MUTT_TAG, false);
+      mutt_set_flag(Contex2->mailbox, e, MUTT_TAG, false);
   }
 
   return 0;
@@ -1436,8 +1436,8 @@ static bool check_traditional_pgp(struct Email *e, MuttRedrawFlags *redraw)
 
   e->security |= PGP_TRADITIONAL_CHECKED;
 
-  mutt_parse_mime_message(Context->mailbox, e);
-  struct Message *msg = mx_msg_open(Context->mailbox, e->msgno);
+  mutt_parse_mime_message(Contex2->mailbox, e);
+  struct Message *msg = mx_msg_open(Contex2->mailbox, e->msgno);
   if (!msg)
     return 0;
   if (crypt_pgp_check_traditional(msg->fp, e->body, false))
@@ -1448,7 +1448,7 @@ static bool check_traditional_pgp(struct Email *e, MuttRedrawFlags *redraw)
   }
 
   e->security |= PGP_TRADITIONAL_CHECKED;
-  mx_msg_close(Context->mailbox, &msg);
+  mx_msg_close(Contex2->mailbox, &msg);
   return rc;
 }
 
@@ -1476,6 +1476,6 @@ bool mutt_check_traditional_pgp(struct EmailList *el, MuttRedrawFlags *redraw)
  */
 void mutt_check_stats(void)
 {
-  mutt_mailbox_check(ctx_mailbox(Context),
+  mutt_mailbox_check(ctx_mailbox(Contex2),
                      MUTT_MAILBOX_CHECK_FORCE | MUTT_MAILBOX_CHECK_FORCE_STATS);
 }

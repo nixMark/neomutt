@@ -453,7 +453,7 @@ static void dlg_select_query(char *buf, size_t buflen, struct AliasList *all,
             mutt_addrlist_clear(&al);
           }
         }
-        mutt_send_message(SEND_NO_FLAGS, e, NULL, Context, NULL, NeoMutt->sub);
+        mutt_send_message(SEND_NO_FLAGS, e, NULL, Contex2, NULL, NeoMutt->sub);
         menu->redraw = REDRAW_FULL;
         break;
       }

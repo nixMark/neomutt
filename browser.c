@@ -738,7 +738,7 @@ static int examine_directory(struct Menu *menu, struct BrowserState *state,
       goto ed_out;
     }
 
-    struct Mailbox *m = ctx_mailbox(Context);
+    struct Mailbox *m = ctx_mailbox(Contex2);
     if (m)
       mutt_mailbox_check(m, 0);
 
@@ -841,7 +841,7 @@ static int examine_mailboxes(struct Menu *menu, struct BrowserState *state)
     mailbox = mutt_buffer_pool_get();
     md = mutt_buffer_pool_get();
 
-    struct Mailbox *m = ctx_mailbox(Context);
+    struct Mailbox *m = ctx_mailbox(Contex2);
 
     mutt_mailbox_check(m, 0);
 
@@ -1021,7 +1021,7 @@ static void init_menu(struct BrowserState *state, struct Menu *menu,
     {
       menu->is_mailbox_list = true;
       snprintf(title, titlelen, _("Mailboxes [%d]"),
-               mutt_mailbox_check(ctx_mailbox(Context), 0));
+               mutt_mailbox_check(ctx_mailbox(Contex2), 0));
     }
     else
     {
@@ -1637,9 +1637,9 @@ void mutt_buffer_select_file(struct Buffer *file, SelectFileFlags flags,
           char msg[128];
 
           // TODO(sileht): It could be better to select INBOX instead. But I
-          // don't want to manipulate Context/Mailboxes/mailbox->account here for now.
+          // don't want to manipulate Contex2/Mailboxes/mailbox->account here for now.
           // Let's just protect neomutt against crash for now. #1417
-          if (mutt_str_equal(mailbox_path(Context->mailbox), ff->name))
+          if (mutt_str_equal(mailbox_path(Contex2->mailbox), ff->name))
           {
             mutt_error(_("Can't delete currently selected mailbox"));
             break;
@@ -1648,7 +1648,7 @@ void mutt_buffer_select_file(struct Buffer *file, SelectFileFlags flags,
           snprintf(msg, sizeof(msg), _("Really delete mailbox \"%s\"?"), ff->name);
           if (mutt_yesorno(msg, MUTT_NO) == MUTT_YES)
           {
-            if (imap_delete_mailbox(Context->mailbox, ff->name) == 0)
+            if (imap_delete_mailbox(Contex2->mailbox, ff->name) == 0)
             {
               /* free the mailbox from the browser */
               FREE(&ff->name);
@@ -2013,9 +2013,9 @@ void mutt_buffer_select_file(struct Buffer *file, SelectFileFlags flags,
           break;
 
         if (op == OP_CATCHUP)
-          mdata = mutt_newsgroup_catchup(Context->mailbox, CurrentNewsSrv, ff->name);
+          mdata = mutt_newsgroup_catchup(Contex2->mailbox, CurrentNewsSrv, ff->name);
         else
-          mdata = mutt_newsgroup_uncatchup(Context->mailbox, CurrentNewsSrv, ff->name);
+          mdata = mutt_newsgroup_uncatchup(Contex2->mailbox, CurrentNewsSrv, ff->name);
 
         if (mdata)
         {

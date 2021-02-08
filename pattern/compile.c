@@ -68,7 +68,7 @@ enum EatRangeError
 {
   RANGE_E_OK,     ///< Range is valid
   RANGE_E_SYNTAX, ///< Range contains syntax error
-  RANGE_E_CTX,    ///< Range requires Context, but none available
+  RANGE_E_CTX,    ///< Range requires Contex2, but none available
 };
 
 #define KILO 1024
@@ -178,7 +178,7 @@ static bool eat_query(struct Pattern *pat, PatternCompFlags flags,
   mutt_buffer_addstr(&cmd_buf, C_ExternalSearchCommand);
   mutt_buffer_addch(&cmd_buf, ' ');
 
-  struct Mailbox *m = ctx_mailbox(Context);
+  struct Mailbox *m = ctx_mailbox(Contex2);
   if (!m)
   {
     mutt_buffer_addch(&cmd_buf, '/');
@@ -719,7 +719,7 @@ static int report_regerror(int regerr, regex_t *preg, struct Buffer *err)
 }
 
 /**
- * is_context_available - Do we need a Context for this Pattern?
+ * is_context_available - Do we need a Contex2 for this Pattern?
  * @param s      String to check
  * @param pmatch Regex matches
  * @param kind   Range type, e.g. #RANGE_K_REL
@@ -746,7 +746,7 @@ static bool is_context_available(struct Buffer *s, regmatch_t pmatch[],
     return true;
 
   /* We need a current message.  Do we actually have one? */
-  if (Context && Context->menu)
+  if (Contex2 && Contex2->menu)
     return true;
 
   /* Nope. */
@@ -774,7 +774,7 @@ static int scan_range_num(struct Buffer *s, regmatch_t pmatch[], int group, int 
   {
     case RANGE_K_REL:
     {
-      struct Email *e = mutt_get_virt_email(Context->mailbox, Context->menu->current);
+      struct Email *e = mutt_get_virt_email(Contex2->mailbox, Contex2->menu->current);
       return num + EMSG(e);
     }
     case RANGE_K_LT:
@@ -803,7 +803,7 @@ static int scan_range_slot(struct Buffer *s, regmatch_t pmatch[], int grp, int s
     if (side == RANGE_S_LEFT)
       return 1;
     if (side == RANGE_S_RIGHT)
-      return Context->mailbox->msg_count;
+      return Contex2->mailbox->msg_count;
   }
   /* We have something, so determine what */
   unsigned char c = (unsigned char) (s->dptr[pmatch[grp].rm_so]);
@@ -812,10 +812,10 @@ static int scan_range_slot(struct Buffer *s, regmatch_t pmatch[], int grp, int s
     case RANGE_CIRCUM:
       return 1;
     case RANGE_DOLLAR:
-      return Context->mailbox->msg_count;
+      return Contex2->mailbox->msg_count;
     case RANGE_DOT:
     {
-      struct Email *e = mutt_get_virt_email(Context->mailbox, Context->menu->current);
+      struct Email *e = mutt_get_virt_email(Contex2->mailbox, Contex2->menu->current);
       return EMSG(e);
     }
     case RANGE_LT:
@@ -881,12 +881,12 @@ static int eat_range_by_regex(struct Pattern *pat, struct Buffer *s, int kind,
   /* Special case for a bare 0. */
   if ((kind == RANGE_K_BARE) && (pat->min == 0) && (pat->max == 0))
   {
-    if (!Context->menu)
+    if (!Contex2->menu)
     {
       mutt_buffer_strcpy(err, _("No current message"));
       return RANGE_E_CTX;
     }
-    struct Email *e = mutt_get_virt_email(Context->mailbox, Context->menu->current);
+    struct Email *e = mutt_get_virt_email(Contex2->mailbox, Contex2->menu->current);
     pat->max = EMSG(e);
     pat->min = pat->max;
   }
@@ -907,10 +907,10 @@ static bool eat_message_range(struct Pattern *pat, PatternCompFlags flags,
 {
   bool skip_quote = false;
 
-  /* We need a Context for pretty much anything. */
-  if (!Context)
+  /* We need a Contex2 for pretty much anything. */
+  if (!Contex2)
   {
-    mutt_buffer_strcpy(err, _("No Context"));
+    mutt_buffer_strcpy(err, _("No Contex2"));
     return false;
   }
 

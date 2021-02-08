@@ -390,7 +390,7 @@ int mutt_thread_set_flag(struct Email *e, enum MessageType flag, bool bf, bool s
   start = cur;
 
   if (cur->message && (cur != e->thread))
-    mutt_set_flag(Context->mailbox, cur->message, flag, bf);
+    mutt_set_flag(Contex2->mailbox, cur->message, flag, bf);
 
   cur = cur->child;
   if (!cur)
@@ -399,7 +399,7 @@ int mutt_thread_set_flag(struct Email *e, enum MessageType flag, bool bf, bool s
   while (true)
   {
     if (cur->message && (cur != e->thread))
-      mutt_set_flag(Context->mailbox, cur->message, flag, bf);
+      mutt_set_flag(Contex2->mailbox, cur->message, flag, bf);
 
     if (cur->child)
       cur = cur->child;
@@ -419,7 +419,7 @@ int mutt_thread_set_flag(struct Email *e, enum MessageType flag, bool bf, bool s
 done:
   cur = e->thread;
   if (cur->message)
-    mutt_set_flag(Context->mailbox, cur->message, flag, bf);
+    mutt_set_flag(Contex2->mailbox, cur->message, flag, bf);
   return 0;
 }
 

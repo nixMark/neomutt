@@ -919,7 +919,7 @@ static void dot_account_list(FILE *fp, struct AccountList *al, struct ListHead *
 
 static void dot_context(FILE *fp, struct Context *ctx, struct ListHead *links)
 {
-  dot_object_header(fp, ctx, "Context", "#ff80ff");
+  dot_object_header(fp, ctx, "Contex2", "#ff80ff");
   dot_ptr(fp, "mailbox", ctx->mailbox, "#80ff80");
 #ifdef GV_HIDE_CONTEXT_CONTENTS
   dot_type_number(fp, "vsize", ctx->vsize);
@@ -974,15 +974,15 @@ void dump_graphviz(const char *title)
   dot_account_list(fp, &NeoMutt->accounts, &links);
 
 #ifndef GV_HIDE_CONTEXT
-  if (Context)
-    dot_context(fp, Context, &links);
+  if (Contex2)
+    dot_context(fp, Contex2, &links);
 
 #ifndef GV_HIDE_NEOMUTT
   /* Globals */
   fprintf(fp, "\t{ rank=same ");
-  if (Context)
+  if (Contex2)
   {
-    dot_ptr_name(name, sizeof(name), Context);
+    dot_ptr_name(name, sizeof(name), Contex2);
     fprintf(fp, "%s ", name);
   }
   dot_ptr_name(name, sizeof(name), NeoMutt);

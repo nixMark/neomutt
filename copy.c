@@ -510,7 +510,7 @@ int mutt_copy_header(FILE *fp_in, struct Email *e, FILE *fp_out,
   {
     temp_hdr = e->env->x_label;
     /* env->x_label isn't currently stored with direct references elsewhere.
-     * Context->label_hash strdups the keys.  But to be safe, encode a copy */
+     * Contex2->label_hash strdups the keys.  But to be safe, encode a copy */
     if (!(chflags & CH_DECODE))
     {
       temp_hdr = mutt_str_dup(temp_hdr);
@@ -529,7 +529,7 @@ int mutt_copy_header(FILE *fp_in, struct Email *e, FILE *fp_out,
   if ((chflags & CH_UPDATE_SUBJECT) && e->env->subject)
   {
     temp_hdr = e->env->subject;
-    /* env->subject is directly referenced in Context->subj_hash, so we
+    /* env->subject is directly referenced in Contex2->subj_hash, so we
      * have to be careful not to encode (and thus free) that memory. */
     if (!(chflags & CH_DECODE))
     {
@@ -628,7 +628,7 @@ int mutt_copy_message_fp(FILE *fp_out, FILE *fp_in, struct Email *e,
     else
     {
       mutt_make_string(prefix, sizeof(prefix), wraplen, NONULL(C_IndentString),
-                       Context->mailbox, Context->msg_in_pager, e);
+                       Contex2->mailbox, Contex2->msg_in_pager, e);
     }
   }
 
@@ -692,10 +692,10 @@ int mutt_copy_message_fp(FILE *fp_out, FILE *fp_in, struct Email *e,
         body->offset = new_offset;
 
         /* update the total size of the mailbox to reflect this deletion */
-        Context->mailbox->size -= body->length - new_length;
+        Contex2->mailbox->size -= body->length - new_length;
         /* if the message is visible, update the visible size of the mailbox as well.  */
-        if (Context->mailbox->v2r[e->msgno] != -1)
-          Context->vsize -= body->length - new_length;
+        if (Contex2->mailbox->v2r[e->msgno] != -1)
+          Contex2->vsize -= body->length - new_length;
 
         body->length = new_length;
         mutt_body_free(&body->parts);

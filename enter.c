@@ -508,7 +508,7 @@ int mutt_enter_string_full(char *buf, size_t buflen, int col,
 
             struct Buffer *pool = mutt_buffer_pool_get();
             mutt_buffer_addstr(pool, buf);
-            mutt_mailbox_next(Context ? Context->mailbox : NULL, pool);
+            mutt_mailbox_next(Contex2 ? Contex2->mailbox : NULL, pool);
             mutt_str_copy(buf, mutt_buffer_string(pool), buflen);
             mutt_buffer_pool_release(&pool);
 

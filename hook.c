@@ -654,7 +654,7 @@ static int addr_hook(char *path, size_t pathlen, HookFlags type,
 void mutt_default_save(char *path, size_t pathlen, struct Email *e)
 {
   *path = '\0';
-  if (addr_hook(path, pathlen, MUTT_SAVE_HOOK, Context, e) == 0)
+  if (addr_hook(path, pathlen, MUTT_SAVE_HOOK, Contex2, e) == 0)
     return;
 
   struct Envelope *env = e->env;
