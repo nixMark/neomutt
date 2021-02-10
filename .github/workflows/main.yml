@@ -12,7 +12,7 @@ jobs:
       with:
         fetch-depth: 1  
     - name: Read package list
-      uses: ./
+      uses: .github/workflows/
       id: package
       with:
         path: packages.txt
