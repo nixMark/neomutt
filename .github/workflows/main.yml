@@ -8,12 +8,12 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-    - name: Checkout
-      uses: actions/checkout@v2
+    - name: Install Dependencies
+      run: apt install -y ${{ steps.package.outputs.content }}
     - name: Read package list
       uses: ./
       id: package
       with:
         path: packages.txt
-    - name: Install Dependencies
-      run: apt install -y ${{ steps.package.outputs.content }}
+    - name: Checkout
+      uses: actions/checkout@v2
