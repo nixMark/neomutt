@@ -15,12 +15,14 @@ jobs:
       uses: actions/checkout@v2
       with:
         fetch-depth: 1  
+    - name: Read file
+      uses: juliangruber/read-file-action@v1.0.0
+      with:
+        path: .github/workflows/packages.txt
     - name: Read package list
       uses: .github/workflows
       id: package
       with:
         path: .github/workflows/packages.txt
-    # - name: Install Dependencies
-    #   run: apt install -y ${{ steps.package.outputs.content }}
     - name: Install packages 
-      run: sudo apt install -y autopoint docbook-simple docbook-xsl gettext gpgsm graphviz jimsh libdb-dev libgdbm-dev libgnutls28-dev libgpgme11-dev libgss-dev libidn2-0-dev libkyotocabinet-dev liblmdb-dev liblua5.2-dev liblz4-dev libncursesw5-dev libnotmuch-dev libqdbm-dev librocksdb-dev libsasl2-dev libslang2-dev libssl-dev libtdb-dev libtokyocabinet-dev libxml2-utils libzstd-dev lua5.2 lynx xsltproc
+      run: sudo apt install -y ${{ steps.package.outputs.content }}
