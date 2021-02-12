@@ -17,6 +17,7 @@ jobs:
         fetch-depth: 1  
     - name: Read file
       uses: juliangruber/read-file-action@v1.0.0
+      id: package
       with:
         path: .github/workflows/packages.txt
     - name: Install packages 
