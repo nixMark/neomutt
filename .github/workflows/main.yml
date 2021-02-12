@@ -1,6 +1,10 @@
 name: C/C++ CI
 
-on: workflow_dispatch
+on: 
+  workflow_dispatch:
+    branches: 
+     - '*'
+     - '!flatcap'
 
 jobs:
   build:
@@ -11,10 +15,12 @@ jobs:
       uses: actions/checkout@v2
       with:
         fetch-depth: 1  
-    - name: Read package list
-      uses: .github/workflows/
-      id: package
-      with:
-        path: packages.txt
-    - name: Install Dependencies
-      run: apt install -y ${{ steps.package.outputs.content }}
+#     - name: Read package list
+#       uses: .github/workflows/
+#       id: package
+#       with:
+#         path: packages.txt
+    # - name: Install Dependencies
+    #   run: apt install -y ${{ steps.package.outputs.content }}
+    - name: list
+      run: ls
