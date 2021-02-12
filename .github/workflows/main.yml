@@ -19,10 +19,5 @@ jobs:
       uses: juliangruber/read-file-action@v1.0.0
       with:
         path: .github/workflows/packages.txt
-    - name: Read package list
-      uses: .github/workflows
-      id: package
-      with:
-        path: .github/workflows/packages.txt
     - name: Install packages 
       run: sudo apt install -y ${{ steps.package.outputs.content }}
