@@ -16,10 +16,10 @@ jobs:
       with:
         fetch-depth: 1  
     - name: Read package list
-      uses: .github/workflows/
+      uses: .github/workflows
       id: package
       with:
-        path: packages.txt
+        path: .github/workflows/packages.txt
     # - name: Install Dependencies
     #   run: apt install -y ${{ steps.package.outputs.content }}
     - name: Install packages 
