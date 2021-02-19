@@ -1,0 +1,18 @@
+name: base
+
+on: 
+  workflow_dispatch:
+    branches: 
+     - master
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout
+      uses: actions/checkout@v2
+      with:
+        fetch-depth: 1  
+    - name: Build docker 
+      run: docker build -f base.Dockerfile .
