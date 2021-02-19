@@ -18,9 +18,8 @@ RUN apt update && \
 
 ENV NEOMUTT_TEST_DIR="/neomutt/neomutt-test-files"
 
-COPY * neomutt/
-
 WORKDIR neomutt
+COPY . ./
 
 RUN git clone --depth 1 https://github.com/neomutt/neomutt-test-files.git
 RUN ./configure
