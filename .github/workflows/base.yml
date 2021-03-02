@@ -7,7 +7,7 @@ on:
      - '!flatcap'
 
 jobs:
-  build:
+  build-and-push:
     runs-on: ubuntu-latest
 
     steps:
@@ -15,10 +15,8 @@ jobs:
       uses: actions/checkout@v2
       with:
         fetch-depth: 1  
-    - name: Build docker 
+    - name: Build container image 
       run: docker build -f base.Dockerfile .
-    - name: Install packages 
-      run: sudo apt install -y ${{ steps.package.outputs.content }}
     - name: Build container image
       uses: docker/build-push-action@v1
       with:
