@@ -1,9 +1,10 @@
-name: base
+name: Base image build
 
 on: 
   workflow_dispatch:
     branches: 
-     - master
+     - '*'
+     - '!flatcap'
 
 jobs:
   build:
@@ -16,3 +17,14 @@ jobs:
         fetch-depth: 1  
     - name: Build docker 
       run: docker build -f base.Dockerfile .
+    - name: Install packages 
+      run: sudo apt install -y ${{ steps.package.outputs.content }}
+    - name: Build container image
+      uses: docker/build-push-action@v1
+      with:
+        username: ${{ github.actor }}
+        password: ${{ secrets.GH_TOKEN }}
+        registry: docker.pkg.github.com
+        repository: ${{ github.repository }}/neomutt-base
+        tag_with_sha: true
+        tag_with_ref: true
