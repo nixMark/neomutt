@@ -18,8 +18,9 @@ jobs:
     - name: Build container image 
       run: docker build -f base.Dockerfile .
     - name: Build container image
-      uses: docker/build-push-action@v1
+      uses: docker/build-push-action@v2
       with:
+        push: true
         username: ${{ github.actor }}
         password: ${{ secrets.GH_TOKEN }}
         registry: docker.pkg.github.com
