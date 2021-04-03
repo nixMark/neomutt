@@ -17,7 +17,7 @@ jobs:
         fetch-depth: 1  
     - name: Build container image 
       run: docker build -f base.Dockerfile .
-    - name: Build container image
+    - name: Push container image
       uses: docker/build-push-action@v2
       with:
         push: true
@@ -27,3 +27,6 @@ jobs:
         repository: ${{ github.repository }}/neomutt-base
         tag_with_sha: true
         tag_with_ref: true
+        tags: |
+          base-version:1.0.0
+          
