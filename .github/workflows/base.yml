@@ -31,6 +31,5 @@ jobs:
         file: base.Dockerfile
         platforms: linux/amd64
         push: true
-        tags: |
-          ghcr.io/nixmark/base-version:1.0.0
+        tags: ghcr.io/nixmark/base-version:1.0.0
 
