@@ -27,7 +27,4 @@ jobs:
         platforms: linux/amd64
         push: true
         tags: |
-            nixmark/base-version:latest
-            nixmark/base-version:1.0.0
             ghcr.io/nixmark/base-version:latest
-            ghcr.io/nixmark/base-version:1.0.0
