@@ -26,10 +26,12 @@ jobs:
     - name: Check location
       run: ls
     - name: Build and push
-      uses: docker/build-push-action@v2
+      uses: docker/build-push-action@v2.4
       with:
         file: base.Dockerfile
         platforms: linux/amd64
         push: true
-        tags: nixmark/base-version:1.0.0
-
+        tags: nixmark/base-version:latest
+        registry: ghcr.io
+        username: ${{ github.repository_owner  }}
+        password: ${{ secrets.GH_TOKEN }}
