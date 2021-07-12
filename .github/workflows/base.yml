@@ -28,3 +28,5 @@ jobs:
         push: true
         tags: |
             ghcr.io/nixmark/neomutt-base:latest
+        username: ${{ github.repository_owner }}
+        password: ${{ secrets.GITHUB_TOKEN }}
