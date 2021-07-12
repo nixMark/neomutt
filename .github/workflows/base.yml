@@ -28,3 +28,5 @@ jobs:
         push: true
         tags: |
             ghcr.io/nixmark/neomutt-base:latest
+        secrets: |
+            "github_token=${{ secrets.GITHUB_TOKEN }}"
