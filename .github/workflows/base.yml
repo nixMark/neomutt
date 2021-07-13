@@ -27,5 +27,5 @@ jobs:
         platforms: linux/amd64
         push: true
         tags: |
-           nixmark/neomutt-base:latest
-           nixmark/neomutt-base:1.0.0
+           ghcr.io/nixmark/neomutt-base:latest
+           ghcr.io/nixmark/neomutt-base:1.0.0
