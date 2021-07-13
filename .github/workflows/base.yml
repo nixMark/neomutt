@@ -28,3 +28,4 @@ jobs:
         push: true
         tags: |
            nixmark/neomutt-base:latest
+           nixmark/neomutt-base:1.0.0
